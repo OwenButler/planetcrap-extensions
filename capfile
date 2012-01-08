@@ -4,3 +4,8 @@ desc "copy the lastest chrome version to the server"
 task :update_chrome do
   upload("planetcrap-chrome.user.js", "/var/sites/www.owenbutler.org/planetcrap/planetcrap-chrome.user.js")
 end
+
+desc "copy the lastest firefox version to the server"
+task :update_firefox do
+  upload("planetcrap-latest.user.js", "/var/sites/www.owenbutler.org/planetcrap/planetcrap-latest.user.js")
+end
