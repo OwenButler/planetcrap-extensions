@@ -1,0 +1,6 @@
+role :servers, "owenbutler.org"
+
+desc "copy the lastest chrome version to the server"
+task :update_chrome do
+  upload("planetcrap-chrome.user.js", "/var/sites/www.owenbutler.org/planetcrap/planetcrap-chrome.user.js")
+end
