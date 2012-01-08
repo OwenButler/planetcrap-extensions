@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          planetcrap
 // @namespace     http://www.planetcrap.com/greasemonkey/
-// @description   some helper functions for planetcrap 0.20 2012-01-08 18:08
+// @description   some helper functions for planetcrap 0.21 2012-01-08 21:08
 // @match http://www.planetcrap.com/*
 // @match http://planetcrap.com/*
 // @match http://girlskissing.planetcrap.com/*
@@ -9,7 +9,7 @@
 
 var plonkStr = '';
 var plonkList = '';
-// Cheesy's changes END
+var PLONK_LIST = 'plonkList'
 
 // script entry point
 function entryPoint() {
@@ -92,15 +92,26 @@ function getXML(url, cb) {
 }
 
 
+function getFromStorageWithDefault(itemName, defaultItem) {
+	return localStorage.getItem(itemName) == null ? defaultItem : localStorage.getItem(itemName);
+}
+
+function editPlonkList() {
+	var newPlonkList = prompt('Enter in user IDs to be plonked, delimited by ;', localStorage.getItem('plonkList'));
+	if (newPlonkList != null) {
+		localStorage.setItem('plonkList', newPlonkList);
+	}
+}
 
 function initPlonkList () {
-	// Cheesy's Changes START
-	plonkStr = '713;6443';
+	embedFunction(editPlonkList);
+	plonkStr = getFromStorageWithDefault(PLONK_LIST, '713;6443');
+	localStorage.setItem(PLONK_LIST, plonkStr);
 	plonkList = plonkStr.split(';');
 
 	plonkCount = 0;
-	// Cheesy's Changes END
 }
+
 
 
 function processComments() {
@@ -140,7 +151,7 @@ function addExtraPageElements() {
 function addReplyBoxHelperLinks() {
 	// install bold, italic etc helper links
 	var helperLinksDiv = document.createElement("span");
-	helperLinksDiv.innerHTML = ' <a href="#" class="helper" id="bold" accesskey="b" onclick="return false"><strong id="bold">b</strong></a>&nbsp;<a href="#" class="helper" id="italic" accesskey="i" onclick="return false"><em id="italic">it</em></a>&nbsp;<a href="#" class="helper" id="underline" accesskey="u" onclick="return false"><u id="underline">u</u></a>&nbsp;<a href="#" class="helper" id="strike" accesskey="s" onclick="return false"><del id="strike">strike</del></a>&nbsp;<a href="#" class="helper" id="helperlink" accesskey="l" onclick="return false">url</a>&nbsp;<a href="#" class="helper" id="helperquote" accesskey="q" onclick="return false">quote</a>&nbsp;<a href="#" class="helper" id="tt" accesskey="t" onclick="return false"><em id="tt">tt</em></a>';
+	helperLinksDiv.innerHTML = ' <a href="#" class="helper" id="bold" accesskey="b" onclick="return false"><strong id="bold">b</strong></a>&nbsp;<a href="#" class="helper" id="italic" accesskey="i" onclick="return false"><em id="italic">it</em></a>&nbsp;<a href="#" class="helper" id="underline" accesskey="u" onclick="return false"><u id="underline">u</u></a>&nbsp;<a href="#" class="helper" id="strike" accesskey="s" onclick="return false"><del id="strike">strike</del></a>&nbsp;<a href="#" class="helper" id="helperlink" accesskey="l" onclick="return false">url</a>&nbsp;<a href="#" class="helper" id="helperquote" accesskey="q" onclick="return false">quote</a>&nbsp;<a href="#" class="helper" id="tt" accesskey="t" onclick="return false"><em id="tt">tt</em>&nbsp;</a><a href="#" class="helper" id="editPlonkList" onclick="editPlonkList(); return false;">edit plonk list</a>';
 	commentBody = document.forms[0].elements.namedItem('comment[body]');
 	commentBody.parentNode.insertBefore(helperLinksDiv, commentBody.previousSibling.previousSibling);
 }
@@ -197,9 +208,7 @@ function crapSift(theForm) {
     var u = document.getElementById("cs").elements.namedItem('u').value;
     
     searchResults.id = 'pcgs-searchResults';
-    searchResults.innerHTML = '<iframe style="margin: 10px 0px 0px 0px; border: 0px; height: 800px;" src="http://crapsifter.jibble.net/search.php?searchterm=' + 
-    q + 
-    '&poster=' + u + '" ' + 'width="100%" />';
+    searchResults.innerHTML = '<iframe style="margin: 10px 0px 0px 0px; border: 0px; height: 800px;" src="http://crapsifter.jibble.net/search.php?searchterm=' +  q + '&poster=' + u + '" ' + 'width="100%" />';
     document.forms[0].elements.namedItem('comment[body]').parentNode.appendChild(searchResults);
 }
 
