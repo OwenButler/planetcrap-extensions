@@ -532,6 +532,6 @@ function setAndFocus(node, text) {
 function addStyles() {
 	//default
 	addGlobalStyle('.preview-window blockquote { color: #666 ! important; margin-top: 0px; margin-bottom: 0px; }');
-	addGlobalStyle('#bold, #italic, #underline, #strike, #helperlink, #helperquote, #tt { font-weight: normal; color: #000; }');
+	addGlobalStyle('#bold, #italic, #underline, #strike, #helperlink, #helperquote, #tt, #editPlonkList { font-weight: normal; color: #000; }');
 	addGlobalStyle('#tt { font-family: Courier New; }');
 }
